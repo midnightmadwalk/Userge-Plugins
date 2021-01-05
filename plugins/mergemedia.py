@@ -64,7 +64,7 @@ async def merge_(message: Message):
     # detecting extension.
     await message.edit("`😎🥲 detecting extension ...`")
     for ext in os.listdir("merge")[:1]:
-        a_a, b_b = re.findall("[^.]*$", ext)
+        a_a = re.findall("[^.]*$", ext)[0]
         await message.edit(f"detected extension is .{a_a}")
     #custom name.
     if name_:
@@ -97,7 +97,7 @@ async def merge_(message: Message):
         "usage": "{tr}mergeclear",
     },
 )
-async def merge_(message: Message):
+async def mergeclear_(message: Message):
     '''incase you saved wrong media.'''
     try:
         shutil.rmtree("merge")
