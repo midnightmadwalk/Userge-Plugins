@@ -15,13 +15,13 @@ from pathlib import Path
 from userge import Message, userge
 from userge.plugins.misc.upload import upload
 from userge.utils import progress, runcmd
-
+from hachoir.stream.input import NullStreamError, InputStreamError 
 
 @userge.on_cmd(
     "mergesave",
     about={
-        "header": "save file for {merge}",
-        "usage": "{tr} reply to media ",
+        "header": "save file for {tr}merge",
+        "usage": "{tr} reply to [media] ",
     },
 )
 async def mergesave_(message: Message):
@@ -53,6 +53,7 @@ async def mergesave_(message: Message):
 )
 async def merge_(message: Message):
     """MergeMedia with FFmpeg"""
+    name_ = message.input_str
     # preparing text file.
     await message.edit("`🙂🙃 Preparing text file ...`")
     x_x = codecs.open("merge.txt", "w+", "utf-8")
@@ -64,16 +65,43 @@ async def merge_(message: Message):
     await message.edit("`😎🥲 detecting extension ...`")
     for ext in os.listdir("merge")[:1]:
         a_a, b_b = re.findall("[^.]*$", ext)
+        await message.edit(f"detected extension is .{a_a}")
+    #custom name.
+    if name_:
+        output_path = "merge/" + name_ + "."+ a_a
+    else:
         output_path = "merge/output." + a_a
-    await message.edit(f"detected extension is .{a_a}")
     # ffmpeg.
     await message.edit("`🏃️🏃🏃 ffmpeg ...`")
-    await runcmd(
+    logs_ = await runcmd(
       f'''ffmpeg -f concat -safe 0 -i merge.txt -map 0 -c copy -scodec copy {output_path}'''
     )
     # upload.
-    await upload(message, Path(output_path))
+    try:
+        await upload(message, Path(output_path))
+    except (NullStreamError, InputStreamError):
+        await message.err("Something went south generating ffmpeg log file.")
+        await message.reply(logs_)
+    else:
+      await message.edit("`successfully merged ...`")
     # cleanup.
     await message.edit("`🤯😪 cleaning mess ...`", del_in=10)
     shutil.rmtree("merge")
     os.remove("merge.txt")
+
+
+@userge.on_cmd(
+    "mergeclear",
+    about={
+        "header": "Incase you saved wrong media",
+        "usage": "{tr}mergeclear",
+    },
+)
+async def merge_(message: Message):
+    '''incase you saved wrong media.'''
+    try:
+        shutil.rmtree("merge")
+    except FileNotFoundError:
+        await message.err("already cleared")
+    else:
+        await message.edit("`cleared ...`", del_in=6)
