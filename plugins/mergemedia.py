@@ -21,7 +21,7 @@ from hachoir.stream.input import NullStreamError, InputStreamError
     "mergesave",
     about={
         "header": "save file for {tr}merge",
-        "usage": "{tr} reply to [media] ",
+        "usage": "{tr} reply to [media] for saving it ",
     },
 )
 async def mergesave_(message: Message):
