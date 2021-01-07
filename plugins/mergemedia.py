@@ -100,7 +100,7 @@ async def merge_(message: Message):
 async def mergeclear_(message: Message):
     '''incase you saved wrong media.'''
     try:
-        shutil.rmtree("merge")
+        shutil.rmtree("merge", ignore_errors=True)
     except FileNotFoundError:
         await message.err("already cleared")
     else:
