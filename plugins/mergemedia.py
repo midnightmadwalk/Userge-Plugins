@@ -8,13 +8,13 @@
 import os
 import re
 import codecs
-
 import shutil
-from pathlib import Path
 
+from pathlib import Path
 from userge import Message, userge
 from userge.plugins.misc.upload import upload
 from userge.utils import progress, runcmd
+from hachoir.stream.input import NullStreamError, InputStreamError 
 
 
 @userge.on_cmd(
