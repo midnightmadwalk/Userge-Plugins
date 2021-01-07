@@ -15,7 +15,7 @@ from pathlib import Path
 from userge import Message, userge
 from userge.plugins.misc.upload import upload
 from userge.utils import progress, runcmd
-from hachoir.stream.input import NullStreamError, InputStreamError 
+
 
 @userge.on_cmd(
     "mergesave",
@@ -27,8 +27,18 @@ from hachoir.stream.input import NullStreamError, InputStreamError
 async def mergesave_(message: Message):
     """mergesave"""
     # saving files in a separate folder.
-    await message.edit("`downloading ...`")
-    try:
+    r = message.reply_to_message
+    if not r:
+        await message.err("Reply To Media, dear.")
+    if not (
+      r.audio
+      or r.document
+      or r.video
+      or r.video_note
+      or r.voice
+    ):
+        await message.err("Not Supported Extension")
+    else:
         replied_media = await message.client.download_media(
           message=message.reply_to_message,
           file_name='userge/xcache/merge/',
@@ -38,9 +48,6 @@ async def mergesave_(message: Message):
             "`Saving for further merge !`"
           ),
         )
-    except AttributeError:
-        await message.err("Reply To Media,dear.")
-    else:
         await message.edit(f"Saved in {replied_media}")
 
 
