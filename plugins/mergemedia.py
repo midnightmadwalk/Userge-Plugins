@@ -29,9 +29,9 @@ async def mergesave_(message: Message):
     # saving files in a separate folder.
     await message.edit("`downloading ...`")
     try:
-        o_o = await message.client.download_media(
+        replied_media = await message.client.download_media(
           message=message.reply_to_message,
-          file_name='merge/',
+          file_name='userge/xcache/merge/',
           progress=progress,
           progress_args=(
             message,
@@ -41,7 +41,7 @@ async def mergesave_(message: Message):
     except AttributeError:
         await message.err("Reply To Media,dear.")
     else:
-        await message.edit(f"Saved in {o_o}")
+        await message.edit(f"Saved in {replied_media}")
 
 
 @userge.on_cmd(
@@ -57,20 +57,20 @@ async def merge_(message: Message):
     # preparing text file.
     await message.edit("`🙂🙃 Preparing text file ...`")
     x_x = codecs.open("merge.txt", "w+", "utf-8")
-    for media in os.listdir("merge"):
-        data_ = "file" + " " + "'" + "merge/" + media + "'" + "\n"
+    for media in os.listdir("userge/xcache/merge"):
+        data_ = "file" + " " + "'" + "userge/xcache/merge/" + media + "'" + "\n"
         x_x.write(data_)
     x_x.close()
     # detecting extension.
     await message.edit("`😎🥲 detecting extension ...`")
-    for ext in os.listdir("merge")[:1]:
+    for ext in os.listdir("userge/xcache/merge")[:1]:
         a_a = re.findall("[^.]*$", ext)[0]
         await message.edit(f"detected extension is .{a_a}")
-    #custom name.
+    # custom name.
     if name_:
-        output_path = "merge/" + name_ + "."+ a_a
+        output_path = "userge/xcache/merge/" + name_ + "."+ a_a
     else:
-        output_path = "merge/output." + a_a
+        output_path = "userge/xcache/merge/output." + a_a
     # ffmpeg.
     await message.edit("`🏃️🏃🏃 ffmpeg ...`")
     logs_ = await runcmd(
@@ -86,7 +86,7 @@ async def merge_(message: Message):
       await message.edit("`successfully merged ...`")
     # cleanup.
     await message.edit("`🤯😪 cleaning mess ...`", del_in=10)
-    shutil.rmtree("merge")
+    shutil.rmtree("userge/xcache/merge")
     os.remove("merge.txt")
 
 
@@ -100,7 +100,7 @@ async def merge_(message: Message):
 async def mergeclear_(message: Message):
     '''incase you saved wrong media.'''
     try:
-        shutil.rmtree("merge", ignore_errors=True)
+        shutil.rmtree("userge/xcache/merge", ignore_errors=True)
     except FileNotFoundError:
         await message.err("already cleared")
     else:
