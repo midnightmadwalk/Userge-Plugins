@@ -25,7 +25,7 @@ from hachoir.stream.input import NullStreamError, InputStreamError
     },
 )
 async def mergesave_(message: Message):
-    """mergesave"""
+    '''Save Media'''
     # saving files in a separate folder.
     r = message.reply_to_message
     if not r:
@@ -59,25 +59,25 @@ async def mergesave_(message: Message):
     },
 )
 async def merge_(message: Message):
-    """MergeMedia with FFmpeg"""
+    '''Merge Media.'''
     name_ = message.input_str
     # preparing text file.
     await message.edit("`🙂🙃 Preparing text file ...`")
-    x_x = codecs.open("merge.txt", "w+", "utf-8")
+    txt_file = codecs.open("merge.txt", "w+", "utf-8")
     for media in os.listdir("userge/xcache/merge"):
         data_ = "file" + " " + "'" + "userge/xcache/merge/" + media + "'" + "\n"
-        x_x.write(data_)
-    x_x.close()
+        txt_file.write(data_)
+    txt_file.close()
     # detecting extension.
     await message.edit("`😎🥲 detecting extension ...`")
     for ext in os.listdir("userge/xcache/merge")[:1]:
-        a_a = re.findall("[^.]*$", ext)[0]
-        await message.edit(f"detected extension is .{a_a}")
+        rege_x = re.findall("[^.]*$", ext)[0]
+        await message.edit(f"detected extension is .{rege_x}")
     # custom name.
     if name_:
-        output_path = "userge/xcache/merge/" + name_ + "."+ a_a
+        output_path = "userge/xcache/merge/" + name_ + "."+ rege_x
     else:
-        output_path = "userge/xcache/merge/output." + a_a
+        output_path = "userge/xcache/merge/output." + rege_x
     # ffmpeg.
     await message.edit("`🏃️🏃🏃 ffmpeg ...`")
     logs_ = await runcmd(
@@ -105,7 +105,7 @@ async def merge_(message: Message):
     },
 )
 async def mergeclear_(message: Message):
-    '''incase you saved wrong media.'''
+    '''Clear Saved.'''
     try:
         shutil.rmtree("userge/xcache/merge", ignore_errors=True)
     except FileNotFoundError:
