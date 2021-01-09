@@ -2,8 +2,7 @@
 #  Copyright (C) 2020 BY USERGE-X
 #  All rights reserved.
 #
-#  Author: https://github.com/midnightmadwalk [TG: @midnightmadwalk]
-
+#  Author: https://github.com/midnightmadwalk [TG: @midnightmadwalk] 
 
 import os
 import re
@@ -32,7 +31,7 @@ async def mergesave_(message: Message):
         await message.err("Reply To Media, dear.")
     if not (
       r.audio
-      or r.document
+      # or r.document
       or r.video
       or r.video_note
       or r.voice
