@@ -55,6 +55,7 @@ async def mergesave_(message: Message):
     about={
         "header": "Merge Media.",
         "usage": "perform {tr}merge after saving videos with {tr}mergesave",
+        "example": "{tr}merge | {tr}merge custom_name
     },
 )
 async def merge_(message: Message):
@@ -92,7 +93,7 @@ async def merge_(message: Message):
       await message.edit("`successfully merged ...`")
     # cleanup.
     await message.edit("`🤯😪 cleaning mess ...`", del_in=10)
-    shutil.rmtree("userge/xcache/merge")
+    shutil.rmtree("userge/xcache/merge", ignore_errors=True)
     os.remove("merge.txt")
 
 
